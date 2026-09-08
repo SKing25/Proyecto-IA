@@ -122,7 +122,7 @@ $$d = R \cdot c$$
 
 - Con radio terrestre $R = 6,371\text{ km}$ ($3,440.065\text{ millas náuticas}$).
 - Esta distancia se usa para calcular:
-  $$\text{tiempo\_estimado} = \frac{\text{distancia (nm)}}{\text{velocidad\_promedio (knots)}}$$
+  $$\text{Tiempo Estimado} = \frac{\text{Distancia (nm)}}{\text{Velocidad Promedio (nudos)}}$$
 
 ### 2.3. Optimización con Grilla Espacial ($O(N) + O(E)$ vs $O(E \times N)$)
 - **Problema Inicial:** Cruzar cada una de las 26 aristas contra los 300,000+ pings filtrados requería un doble ciclo que tardaba entre 10 y 15 segundos por ejecución ($O(E \times N)$).
@@ -133,10 +133,10 @@ $$d = R \cdot c$$
 | Atributo | Tipo | Fuente / Método de Cálculo |
 | :--- | :--- | :--- |
 | `distancia` | `float` ($nm$) | Distancia geodésica exacta calculada con Haversine. |
-| `tiempo_estimado` | `float` ($h$) | $\text{distancia} / \text{velocidad\_promedio}$. |
+| `tiempo_estimado` | `float` ($h$) | `distancia` / `velocidad_promedio`. |
 | `velocidad_promedio`| `float` ($kn$) | Media del campo `SOG` (*Speed Over Ground*) de los buques en esa zona. |
 | `nivel_congestion` | `str` | Clasificación empírica basada en tráfico AIS: *Baja* (< 20 buques), *Media* (20–40), *Alta* (> 40). |
-| `costo` | `float` (USD) | Costo operativo: $\$10/\text{nm} \times \text{distancia} + \text{penalización por congestión}$. |
+| `costo` | `float` (USD) | Costo operativo: $\$10/\text{nm} \times \text{distancia} + \text{recargo por congestión}$. |
 | `disponibilidad` | `bool` | Estado operativo (`True` por defecto; permite simular bloqueos de canales). |
 | `num_incidentes` | `int` | Recuento de alertas de navegación / incidentes históricos en el área. |
 
@@ -172,7 +172,7 @@ Para que el algoritmo **A\*** de la siguiente etapa sea **óptimo y admisible**,
 $$h(n) \le h^*(n)$$
 
 Ya se calculó las distancias de las aristas sobre la superficie terrestre real mediante Haversine. La distancia en línea recta geodésica de Haversine entre el nodo actual $n$ y el nodo objetivo $goal$ es el camino más corto posible entre ambos puntos sobre la esfera:
-$$h(n) = \text{haversine}(n.\text{coord}, goal.\text{coord})$$
+$$h(n) = \text{Haversine}(n, goal)$$
 
 Como cualquier ruta de navegación marítima está obligada a rodear cabos, islas o seguir canales de navegación (sumando aristas intermedias), se cumple estrictamente:
 $$h(n) \le h^*(n)$$
