@@ -1,0 +1,17 @@
+# Entornos virtuales
+.venv/
+env/
+venv/
+
+# Archivos de datos masivos (AIS crudos)
+*.csv.zip
+aisdk-*.csv
+*.tar.gz
+
+# Agentes
+.agents/
+
+# IDE y sistema
+.vscode/
+.idea/
+.DS_Store

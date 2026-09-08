@@ -1,0 +1,25 @@
+id,nombre,tipo,lat,lon,pais
+DK_CPH,Copenhagen Smart Port,Puerto,55.7,12.6,Dinamarca
+DK_AAR,Aarhus Logistics Port,Puerto,56.15,10.22,Dinamarca
+DK_ESB,Esbjerg Energy Port,Puerto,55.47,8.44,Dinamarca
+DK_FRC,Fredericia Terminal,Puerto,55.56,9.75,Dinamarca
+DK_AAL,Aalborg Cargo Port,Puerto,57.05,9.92,Dinamarca
+DK_SKA,Skagen Anchor Hub,Puerto,57.72,10.6,Dinamarca
+SE_GOT,Gothenburg Port Hub,Puerto,57.7,11.97,Suecia
+SE_MAL,Malmö Logistic Terminal,Puerto,55.61,12.99,Suecia
+SE_HEL,Helsingborg Gateway,Puerto,56.05,12.69,Suecia
+DE_ROS,Rostock Baltic Terminal,Puerto,54.15,12.1,Alemania
+DE_KLM,Kiel Canal Approach,Puerto,54.37,10.15,Alemania
+NO_KRS,Kristiansand Port,Puerto,58.14,8.0,Noruega
+NO_OSL,Oslofjord Terminal,Puerto,59.1,10.6,Noruega
+WP_SKAGERRAK,Skagerrak TSS Corridor,Waypoint,57.8,9.5,Internacional
+WP_KATTEGAT_N,Kattegat North Lane,Waypoint,57.3,11.3,Internacional
+WP_KATTEGAT_S,Kattegat South Lane,Waypoint,56.35,11.8,Internacional
+WP_STOREBAELT_N,Great Belt North Chokepoint,Waypoint,55.75,10.9,Dinamarca
+WP_STOREBAELT_S,Great Belt South Chokepoint,Waypoint,55.2,11.1,Dinamarca
+WP_ORESUND_N,The Sound North TSS,Waypoint,56.12,12.58,Dinamarca-Suecia
+WP_ORESUND_S,The Sound South TSS,Waypoint,55.5,12.75,Dinamarca-Suecia
+WP_FEHMARNBELT,Fehmarn Belt Passage,Waypoint,54.55,11.3,Alemania-Dinamarca
+WP_NORTHSEA_N,North Sea North Approach,Waypoint,56.8,7.5,Internacional
+WP_NORTHSEA_S,North Sea South Route,Waypoint,55.0,7.5,Internacional
+WP_BALTIC_W,Baltic Sea West Gateway,Waypoint,54.8,13.5,Internacional
