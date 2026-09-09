@@ -1,12 +1,8 @@
 # Entornos virtuales
 .venv/
-env/
-venv/
 
 # Archivos de datos masivos (AIS crudos)
-*.csv.zip
 aisdk-*.csv
-*.tar.gz
 
 # Agentes
 .agents/
@@ -15,3 +11,7 @@ aisdk-*.csv
 .vscode/
 .idea/
 .DS_Store
+
+__pycache__/
+
+

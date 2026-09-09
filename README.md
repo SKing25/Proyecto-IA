@@ -71,7 +71,7 @@ python3 test_agente.py   # Corre la batería completa de pruebas de navegación
 
 ## 1. Resumen Ejecutivo
 
-Se construyó el **Backend de Datos** y la **Topología del Entorno**, transformando un dataset masivo de telemetría marítima cruda (AIS) (https://hub.marinecadastre.gov/pages/vesseltraffic) en una estructura de grafo ponderado $G = (V, E)$ lista para ser consumida por algoritmos de Inteligencia Artificial.
+Se construyó el **Backend de Datos** y la **Topología del Entorno**, transformando un dataset masivo de telemetría marítima cruda (AIS) (https://www.dma.dk/safety-at-sea/navigational-information/ais-data) en una estructura de grafo ponderado $G = (V, E)$ lista para ser consumida por algoritmos de Inteligencia Artificial.
 
 ### Objetivos Completados:
 1. **Ingesta y Limpieza de Datos Masivos:** Procesamiento eficiente del archivo `aisdk-2025-02-27.csv` (~3.1 GB, más de 17.1 millones de pings AIS de la *Danish Maritime Authority*).

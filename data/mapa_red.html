@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa Real Interactivo - Red Marítima G=(V,E)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        #map { height: 100vh; width: 100%; }
+        .legend {
+            background: white; padding: 12px 16px; border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2); font-size: 13px; line-height: 1.6;
+        }
+        .legend h4 { margin: 0 0 8px 0; font-size: 14px; font-weight: bold; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 4px; }
+        .legend-color { width: 18px; height: 18px; margin-right: 8px; border-radius: 3px; display: inline-block; }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map = L.map('map').setView([56.5, 11.2], 6);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        maxZoom: 18
+    }).addTo(map);
+
+    var nodes = {"DK_CPH": {"id": "DK_CPH", "nombre": "Copenhagen Smart Port", "tipo": "Puerto", "lat": 55.7, "lon": 12.6, "pais": "Dinamarca"}, "DK_AAR": {"id": "DK_AAR", "nombre": "Aarhus Logistics Port", "tipo": "Puerto", "lat": 56.15, "lon": 10.22, "pais": "Dinamarca"}, "DK_ESB": {"id": "DK_ESB", "nombre": "Esbjerg Energy Port", "tipo": "Puerto", "lat": 55.47, "lon": 8.44, "pais": "Dinamarca"}, "DK_FRC": {"id": "DK_FRC", "nombre": "Fredericia Terminal", "tipo": "Puerto", "lat": 55.56, "lon": 9.75, "pais": "Dinamarca"}, "DK_AAL": {"id": "DK_AAL", "nombre": "Aalborg Cargo Port", "tipo": "Puerto", "lat": 57.05, "lon": 9.92, "pais": "Dinamarca"}, "DK_SKA": {"id": "DK_SKA", "nombre": "Skagen Anchor Hub", "tipo": "Puerto", "lat": 57.72, "lon": 10.6, "pais": "Dinamarca"}, "SE_GOT": {"id": "SE_GOT", "nombre": "Gothenburg Port Hub", "tipo": "Puerto", "lat": 57.7, "lon": 11.97, "pais": "Suecia"}, "SE_MAL": {"id": "SE_MAL", "nombre": "Malm\u00f6 Logistic Terminal", "tipo": "Puerto", "lat": 55.61, "lon": 12.99, "pais": "Suecia"}, "SE_HEL": {"id": "SE_HEL", "nombre": "Helsingborg Gateway", "tipo": "Puerto", "lat": 56.05, "lon": 12.69, "pais": "Suecia"}, "DE_ROS": {"id": "DE_ROS", "nombre": "Rostock Baltic Terminal", "tipo": "Puerto", "lat": 54.15, "lon": 12.1, "pais": "Alemania"}, "DE_KLM": {"id": "DE_KLM", "nombre": "Kiel Canal Approach", "tipo": "Puerto", "lat": 54.37, "lon": 10.15, "pais": "Alemania"}, "NO_KRS": {"id": "NO_KRS", "nombre": "Kristiansand Port", "tipo": "Puerto", "lat": 58.14, "lon": 8.0, "pais": "Noruega"}, "NO_OSL": {"id": "NO_OSL", "nombre": "Oslofjord Terminal", "tipo": "Puerto", "lat": 59.1, "lon": 10.6, "pais": "Noruega"}, "WP_SKAGERRAK": {"id": "WP_SKAGERRAK", "nombre": "Skagerrak TSS Corridor", "tipo": "Waypoint", "lat": 57.8, "lon": 9.5, "pais": "Internacional"}, "WP_KATTEGAT_N": {"id": "WP_KATTEGAT_N", "nombre": "Kattegat North Lane", "tipo": "Waypoint", "lat": 57.3, "lon": 11.3, "pais": "Internacional"}, "WP_KATTEGAT_S": {"id": "WP_KATTEGAT_S", "nombre": "Kattegat South Lane", "tipo": "Waypoint", "lat": 56.35, "lon": 11.8, "pais": "Internacional"}, "WP_STOREBAELT_N": {"id": "WP_STOREBAELT_N", "nombre": "Great Belt North Chokepoint", "tipo": "Waypoint", "lat": 55.75, "lon": 10.9, "pais": "Dinamarca"}, "WP_STOREBAELT_S": {"id": "WP_STOREBAELT_S", "nombre": "Great Belt South Chokepoint", "tipo": "Waypoint", "lat": 55.2, "lon": 11.1, "pais": "Dinamarca"}, "WP_ORESUND_N": {"id": "WP_ORESUND_N", "nombre": "The Sound North TSS", "tipo": "Waypoint", "lat": 56.12, "lon": 12.58, "pais": "Dinamarca-Suecia"}, "WP_ORESUND_S": {"id": "WP_ORESUND_S", "nombre": "The Sound South TSS", "tipo": "Waypoint", "lat": 55.5, "lon": 12.75, "pais": "Dinamarca-Suecia"}, "WP_FEHMARNBELT": {"id": "WP_FEHMARNBELT", "nombre": "Fehmarn Belt Passage", "tipo": "Waypoint", "lat": 54.55, "lon": 11.3, "pais": "Alemania-Dinamarca"}, "WP_NORTHSEA_N": {"id": "WP_NORTHSEA_N", "nombre": "North Sea North Approach", "tipo": "Waypoint", "lat": 56.8, "lon": 7.5, "pais": "Internacional"}, "WP_NORTHSEA_S": {"id": "WP_NORTHSEA_S", "nombre": "North Sea South Route", "tipo": "Waypoint", "lat": 55.0, "lon": 7.5, "pais": "Internacional"}, "WP_BALTIC_W": {"id": "WP_BALTIC_W", "nombre": "Baltic Sea West Gateway", "tipo": "Waypoint", "lat": 54.8, "lon": 13.5, "pais": "Internacional"}};
+    var edges = [{"origen":"WP_NORTHSEA_S","destino":"DK_ESB","distancia":42.8,"tiempo_estimado":9.39,"velocidad_promedio":4.56,"nivel_congestion":"Baja","costo":426.93,"disponibilidad":true,"num_incidentes":1,"distancia_km":79.27,"buques_detectados":7},{"origen":"WP_NORTHSEA_S","destino":"WP_NORTHSEA_N","distancia":108.07,"tiempo_estimado":8.35,"velocidad_promedio":12.94,"nivel_congestion":"Baja","costo":1078.0,"disponibilidad":true,"num_incidentes":0,"distancia_km":200.15,"buques_detectados":2},{"origen":"WP_NORTHSEA_N","destino":"WP_SKAGERRAK","distancia":88.39,"tiempo_estimado":7.81,"velocidad_promedio":11.32,"nivel_congestion":"Baja","costo":881.69,"disponibilidad":true,"num_incidentes":3,"distancia_km":163.69,"buques_detectados":7},{"origen":"WP_SKAGERRAK","destino":"NO_KRS","distancia":51.94,"tiempo_estimado":4.87,"velocidad_promedio":10.67,"nivel_congestion":"Baja","costo":518.1,"disponibilidad":true,"num_incidentes":0,"distancia_km":96.2,"buques_detectados":4},{"origen":"WP_SKAGERRAK","destino":"NO_OSL","distancia":85.36,"tiempo_estimado":85.36,"velocidad_promedio":0.63,"nivel_congestion":"Baja","costo":851.47,"disponibilidad":true,"num_incidentes":1,"distancia_km":158.08,"buques_detectados":1},{"origen":"WP_SKAGERRAK","destino":"DK_SKA","distancia":35.56,"tiempo_estimado":6.3,"velocidad_promedio":5.64,"nivel_congestion":"Baja","costo":354.71,"disponibilidad":true,"num_incidentes":2,"distancia_km":65.85,"buques_detectados":17},{"origen":"DK_SKA","destino":"DK_AAL","distancia":45.85,"tiempo_estimado":7.4,"velocidad_promedio":6.2,"nivel_congestion":"Baja","costo":457.35,"disponibilidad":true,"num_incidentes":0,"distancia_km":84.92,"buques_detectados":19},{"origen":"DK_SKA","destino":"WP_KATTEGAT_N","distancia":33.85,"tiempo_estimado":2.74,"velocidad_promedio":12.35,"nivel_congestion":"Baja","costo":337.65,"disponibilidad":true,"num_incidentes":2,"distancia_km":62.68,"buques_detectados":6},{"origen":"WP_KATTEGAT_N","destino":"SE_GOT","distancia":32.31,"tiempo_estimado":2.26,"velocidad_promedio":14.32,"nivel_congestion":"Baja","costo":322.29,"disponibilidad":true,"num_incidentes":1,"distancia_km":59.84,"buques_detectados":15},{"origen":"WP_KATTEGAT_N","destino":"WP_KATTEGAT_S","distancia":59.36,"tiempo_estimado":4.58,"velocidad_promedio":12.97,"nivel_congestion":"Baja","costo":592.12,"disponibilidad":true,"num_incidentes":1,"distancia_km":109.93,"buques_detectados":8},{"origen":"WP_KATTEGAT_S","destino":"DK_AAR","distancia":54.05,"tiempo_estimado":3.56,"velocidad_promedio":15.2,"nivel_congestion":"Baja","costo":539.15,"disponibilidad":true,"num_incidentes":0,"distancia_km":100.11,"buques_detectados":8},{"origen":"WP_KATTEGAT_S","destino":"WP_STOREBAELT_N","distancia":46.99,"tiempo_estimado":3.58,"velocidad_promedio":13.14,"nivel_congestion":"Baja","costo":468.73,"disponibilidad":true,"num_incidentes":2,"distancia_km":87.03,"buques_detectados":2},{"origen":"WP_KATTEGAT_S","destino":"WP_ORESUND_N","distancia":29.46,"tiempo_estimado":2.27,"velocidad_promedio":12.96,"nivel_congestion":"Baja","costo":293.86,"disponibilidad":true,"num_incidentes":3,"distancia_km":54.57,"buques_detectados":1},{"origen":"WP_STOREBAELT_N","destino":"DK_FRC","distancia":40.59,"tiempo_estimado":40.59,"velocidad_promedio":0.56,"nivel_congestion":"Baja","costo":404.89,"disponibilidad":true,"num_incidentes":0,"distancia_km":75.17,"buques_detectados":1},{"origen":"WP_STOREBAELT_N","destino":"WP_STOREBAELT_S","distancia":33.72,"tiempo_estimado":2.95,"velocidad_promedio":11.44,"nivel_congestion":"Baja","costo":336.36,"disponibilidad":true,"num_incidentes":4,"distancia_km":62.44,"buques_detectados":10},{"origen":"WP_STOREBAELT_S","destino":"DE_KLM","distancia":59.71,"tiempo_estimado":57.97,"velocidad_promedio":1.03,"nivel_congestion":"Baja","costo":595.61,"disponibilidad":true,"num_incidentes":1,"distancia_km":110.58,"buques_detectados":1},{"origen":"WP_STOREBAELT_S","destino":"WP_FEHMARNBELT","distancia":39.63,"tiempo_estimado":3.83,"velocidad_promedio":10.35,"nivel_congestion":"Baja","costo":395.31,"disponibilidad":true,"num_incidentes":1,"distancia_km":73.4,"buques_detectados":5},{"origen":"WP_ORESUND_N","destino":"SE_HEL","distancia":5.59,"tiempo_estimado":0.62,"velocidad_promedio":9.03,"nivel_congestion":"Baja","costo":55.76,"disponibilidad":true,"num_incidentes":1,"distancia_km":10.35,"buques_detectados":8},{"origen":"WP_ORESUND_N","destino":"DK_CPH","distancia":25.23,"tiempo_estimado":2.79,"velocidad_promedio":9.03,"nivel_congestion":"Baja","costo":251.67,"disponibilidad":true,"num_incidentes":2,"distancia_km":46.72,"buques_detectados":8},{"origen":"DK_CPH","destino":"SE_MAL","distancia":14.27,"tiempo_estimado":1.75,"velocidad_promedio":8.16,"nivel_congestion":"Baja","costo":142.34,"disponibilidad":true,"num_incidentes":0,"distancia_km":26.43,"buques_detectados":6},{"origen":"DK_CPH","destino":"WP_ORESUND_S","distancia":13.04,"tiempo_estimado":1.19,"velocidad_promedio":10.99,"nivel_congestion":"Baja","costo":130.07,"disponibilidad":true,"num_incidentes":1,"distancia_km":24.15,"buques_detectados":14},{"origen":"SE_MAL","destino":"WP_ORESUND_S","distancia":10.49,"tiempo_estimado":1.29,"velocidad_promedio":8.16,"nivel_congestion":"Baja","costo":104.64,"disponibilidad":true,"num_incidentes":0,"distancia_km":19.43,"buques_detectados":6},{"origen":"WP_FEHMARNBELT","destino":"DE_ROS","distancia":36.88,"tiempo_estimado":3.39,"velocidad_promedio":10.88,"nivel_congestion":"Baja","costo":367.88,"disponibilidad":true,"num_incidentes":1,"distancia_km":68.31,"buques_detectados":14},{"origen":"WP_FEHMARNBELT","destino":"WP_BALTIC_W","distancia":77.83,"tiempo_estimado":6.11,"velocidad_promedio":12.73,"nivel_congestion":"Baja","costo":776.35,"disponibilidad":true,"num_incidentes":0,"distancia_km":144.15,"buques_detectados":17},{"origen":"WP_ORESUND_S","destino":"WP_BALTIC_W","distancia":49.28,"tiempo_estimado":4.64,"velocidad_promedio":10.62,"nivel_congestion":"Baja","costo":491.57,"disponibilidad":true,"num_incidentes":1,"distancia_km":91.26,"buques_detectados":8},{"origen":"DE_ROS","destino":"WP_BALTIC_W","distancia":62.52,"tiempo_estimado":5.21,"velocidad_promedio":12.0,"nivel_congestion":"Baja","costo":623.64,"disponibilidad":true,"num_incidentes":0,"distancia_km":115.78,"buques_detectados":15}];
+    var colors = { 'Baja': '#27AE60', 'Media': '#F39C12', 'Alta': '#E74C3C' };
+
+    edges.forEach(function(e) {
+        var u = nodes[e.origen];
+        var v = nodes[e.destino];
+        if (u && v) {
+            var color = colors[e.nivel_congestion] || '#95A5A6';
+            var line = L.polyline([[u.lat, u.lon], [v.lat, v.lon]], {
+                color: color, weight: 4, opacity: 0.85
+            }).addTo(map);
+
+            line.bindPopup(
+                '<b>Ruta: ' + u.nombre + ' &harr; ' + v.nombre + '</b><br>' +
+                '<b>Distancia:</b> ' + e.distancia + ' nm (' + e.distancia_km + ' km)<br>' +
+                '<b>Tiempo estimado:</b> ' + e.tiempo_estimado + ' h<br>' +
+                '<b>Velocidad promedio:</b> ' + e.velocidad_promedio + ' kn<br>' +
+                '<b>Nivel de congestión:</b> <span style="color:' + color + ';font-weight:bold;">' + e.nivel_congestion + '</span><br>' +
+                '<b>Costo estimado:</b> $' + e.costo + ' USD<br>' +
+                '<b>Incidentes:</b> ' + e.num_incidentes + '<br>' +
+                '<b>Disponibilidad:</b> ' + (e.disponibilidad ? 'Disponible' : 'Cerrada')
+            );
+        }
+    });
+
+    for (var id in nodes) {
+        var n = nodes[id];
+        var isPort = (n.tipo === 'Puerto');
+        var marker = L.circleMarker([n.lat, n.lon], {
+            radius: isPort ? 8 : 6,
+            fillColor: isPort ? '#1B4F72' : '#8E44AD',
+            color: '#FFFFFF', weight: 2, opacity: 1, fillOpacity: 0.9
+        }).addTo(map);
+
+        marker.bindPopup(
+            '<b>' + n.nombre + ' (' + n.id + ')</b><br>' +
+            '<b>Tipo:</b> ' + n.tipo + '<br>' +
+            '<b>País:</b> ' + n.pais + '<br>' +
+            '<b>Coordenadas:</b> ' + n.lat + ', ' + n.lon
+        );
+        marker.bindTooltip(n.nombre, { permanent: false, direction: 'top' });
+    }
+
+    var legend = L.control({position: 'bottomleft'});
+    legend.onAdd = function() {
+        var div = L.DomUtil.create('div', 'legend');
+        div.innerHTML = '<h4>Red de Movilidad Marítima</h4>' +
+            '<div class="legend-item"><span class="legend-color" style="background:#1B4F72;"></span>Puerto Comercial</div>' +
+            '<div class="legend-item"><span class="legend-color" style="background:#8E44AD;border-radius:50%;"></span>Waypoint / Canal</div>' +
+            '<hr style="margin:8px 0;border:0;border-top:1px solid #ddd;">' +
+            '<div class="legend-item"><span class="legend-color" style="background:#27AE60;height:4px;"></span>Congestión Baja</div>' +
+            '<div class="legend-item"><span class="legend-color" style="background:#F39C12;height:4px;"></span>Congestión Media</div>' +
+            '<div class="legend-item"><span class="legend-color" style="background:#E74C3C;height:4px;"></span>Congestión Alta</div>';
+        return div;
+    };
+    legend.addTo(map);
+</script>
+</body>
+</html>
