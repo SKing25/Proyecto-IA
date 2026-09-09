@@ -27,6 +27,9 @@ Proyecto-IA/
 ├── README.md             # Vista general del repositorio y ejecución rápida
 ├── requirements.txt      # Dependencias del proyecto (pandas, numpy, networkx, matplotlib)
 ├── dataset.py            # SCRIPT ÚNICO: procesa datos y exporta el grafo
+├── grafo.py              # Carga nodes.csv/edges.csv en un grafo navegable (networkx)
+├── agente.py             # Agente inteligente: percibir, consultar y ejecutar acciones
+├── test_agente.py        # Pruebas de funcionamiento del agente sobre la red
 ├── data/                 # CARPETA DE SALIDA DEL GRAFO
 │   ├── nodes.csv         # 24 puertos y waypoints con coordenadas
 │   ├── edges.csv         # 26 conexiones con los 7 atributos obligatorios
@@ -54,6 +57,13 @@ Este script realiza automáticamente:
 - Agregación espacial vectorizada $O(N) + O(E)$.
 - Exportación de `nodes.csv` y `edges.csv` (con los 7 atributos obligatorios).
 - Generación de la imagen visual `grafo_red.png`.
+
+### 3. Ejecutar el Agente Inteligente y sus Pruebas
+```bash
+python3 grafo.py         # Verifica la carga del grafo (24 nodos, 26 aristas)
+python3 agente.py        # Verifica la percepción inicial del agente
+python3 test_agente.py   # Corre la batería completa de pruebas de navegación
+```
 
 ---
 
@@ -150,13 +160,48 @@ $$d = R \cdot c$$
 
 ---
 
-## 3. Guia de integracion para la siguiente parte
+## 3. Agente Inteligente y Pruebas de Navegación
+
+Sobre el grafo $G=(V,E)$ generado en la sección anterior se construyó un **agente reactivo basado en modelo** capaz de percibir su posición actual, consultar las conexiones legales desde ahí y ejecutar la acción de desplazarse a un nodo adyacente.
+
+### 3.1. Modelo PEAS
+
+| Dimensión | Descripción |
+|---|---|
+| **Performance measure** | Minimizar el tiempo total de navegación (h) y el costo operativo total (USD); de forma secundaria, minimizar la distancia recorrida (nm) y evitar rutas con alto `num_incidentes`. |
+| **Environment** | La red de 24 nodos y 26 aristas descrita arriba. Parcialmente observable (el agente solo conoce las conexiones directas desde su nodo actual), determinista y discreta. |
+| **Actuators** | `moverse_a(nodo_destino)`: desplazar al agente desde su nodo actual a un nodo adyacente disponible. |
+| **Sensors** | `percibir()`: lectura simulada de AIS/GPS que retorna el nodo actual, sus coordenadas y los vecinos disponibles. |
+
+### 3.2. Arquitectura del Agente
+
+- **`grafo.py`** — `construir_grafo()`: carga `data/nodes.csv` y `data/edges.csv` en un `networkx.Graph` **no dirigido** (una ruta marítima se navega en ambos sentidos con los mismos atributos).
+- **`agente.py`** — clase `AgenteMaritimo`:
+  - `percibir()`: retorna el estado actual (nodo, nombre, tipo, coordenadas, país, vecinos disponibles).
+  - `consultar_acciones()`: lista las conexiones legales (`disponibilidad = True`) desde el nodo actual, con su distancia, tiempo y costo.
+  - `ejecutar_accion(nodo_destino)`: mueve al agente si existe una arista directa y disponible; acumula tiempo, costo y distancia; lanza `AccionInvalidaError` si el movimiento no es legal.
+
+### 3.3. Pruebas de Funcionamiento (`test_agente.py`)
+
+| # | Prueba | Qué verifica |
+|---|---|---|
+| 1 | Percepción inicial | El agente reconoce correctamente su nodo de partida y sus vecinos. |
+| 2 | Movimiento simple | Un único desplazamiento válido actualiza bien el estado (nodo, historial, métricas). |
+| 3 | Ruta de múltiples saltos | El agente recorre `DK_CPH → WP_ORESUND_S → WP_BALTIC_W → DE_ROS` acumulando distancia, tiempo y costo sin fallar. |
+| 4 | Rechazo de acción inválida | Intentar moverse a un nodo no adyacente lanza `AccionInvalidaError` y no cambia el estado del agente. |
+| 5 | Conectividad general | Verifica (`nx.is_connected`) que la red no tiene nodos aislados, condición necesaria para que los algoritmos de búsqueda de la siguiente etapa puedan encontrar rutas entre cualquier par de nodos. |
+
+Al ejecutar `python3 test_agente.py` se debe obtener `=== TODAS LAS PRUEBAS PASARON CORRECTAMENTE ===` sin excepciones no controladas.
+
+---
+
+## 4. Guia de integracion para la siguiente parte
 
 En la siguiente etapa del proyecto se tiene la responsabilidad de desarrollar la **Lógica del Agente Inteligente** y los **Algoritmos de Búsqueda** (Búsquedas no informadas: BFS, DFS, UCS; e informadas: A*, Greedy Best-First).
 
 El trabajo ya hecho le entrega una base de datos ya estructurada, limpia y matemáticamente sólida para que no tenga que lidiar con telemetría cruda ni con cálculos de coordenadas.
 
-### 3.1. Qué Archivos Recibe la siguiente etapa
+### 4.1. Qué Archivos Recibe la siguiente etapa
 1. **`data/nodes.csv` (Espacio de Estados $S$):**
    - Contiene `id`, `nombre`, `tipo` (`puerto`/`waypoint`), `lat`, `lon` y `pais`.
    - **Utilidad:** Le da al agente las coordenadas geográficas de cada estado para calcular la **función heurística $h(n)$**.
@@ -166,7 +211,7 @@ El trabajo ya hecho le entrega una base de datos ya estructurada, limpia y matem
 
 ---
 
-### 3.2. Fundamento Matemático para la Búsqueda A* (Heurística Admisible)
+### 4.2. Fundamento Matemático para la Búsqueda A* (Heurística Admisible)
 Para que el algoritmo **A\*** de la siguiente etapa sea **óptimo y admisible**, la heurística $h(n)$ no puede sobreestimar el costo real al objetivo:
 
 $$h(n) \le h^*(n)$$
