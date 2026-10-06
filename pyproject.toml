@@ -1,0 +1,3 @@
+[tool.vercel]
+# Entrada explícita para el deploy en Vercel (detección zero-config).
+entrypoint = "app.main:app"
