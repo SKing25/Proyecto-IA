@@ -12,6 +12,48 @@ DE_ROS,Rostock Baltic Terminal,Puerto,54.15,12.1,Alemania
 DE_KLM,Kiel Canal Approach,Puerto,54.37,10.15,Alemania
 NO_KRS,Kristiansand Port,Puerto,58.14,8.0,Noruega
 NO_OSL,Oslofjord Terminal,Puerto,59.1,10.6,Noruega
+DK_HVS,Hvide Sande Port,Puerto,56.0,8.13,Dinamarca
+DK_THY,Thyboron Port,Puerto,56.7,8.21,Dinamarca
+DK_HAN,Hanstholm Port,Puerto,57.11,8.6,Dinamarca
+DK_HIR,Hirtshals Port,Puerto,57.59,9.96,Dinamarca
+DK_FRH,Frederikshavn Port,Puerto,57.44,10.54,Dinamarca
+DK_GRN,Grenaa Port,Puerto,56.41,10.93,Dinamarca
+DK_EBE,Ebeltoft Port,Puerto,56.19,10.68,Dinamarca
+DK_HOR,Horsens Port,Puerto,55.86,9.85,Dinamarca
+DK_VEJ,Vejle Port,Puerto,55.71,9.54,Dinamarca
+DK_KOL,Kolding Port,Puerto,55.49,9.48,Dinamarca
+DK_ODN,Odense-Lindo Terminal,Puerto,55.48,10.42,Dinamarca
+DK_KER,Kerteminde Port,Puerto,55.45,10.66,Dinamarca
+DK_FAA,Faaborg Port,Puerto,55.1,10.25,Dinamarca
+DK_SVE,Svendborg Port,Puerto,55.06,10.61,Dinamarca
+DK_HUN,Hundested Port,Puerto,55.96,11.85,Dinamarca
+DK_GIL,Gilleleje Port,Puerto,56.12,12.31,Dinamarca
+DK_KAL,Kalundborg Port,Puerto,55.68,11.08,Dinamarca
+DK_KOR,Korsoer Port,Puerto,55.34,11.14,Dinamarca
+DK_NYB,Nyborg Port,Puerto,55.31,10.8,Dinamarca
+DK_VOR,Vordingborg Port,Puerto,55.01,11.91,Dinamarca
+DK_NAK,Nakskov Port,Puerto,54.68,11.14,Dinamarca
+DK_BAN,Bandholm Port,Puerto,54.84,11.48,Dinamarca
+DK_GED,Gedser Ferry Port,Puerto,54.58,11.93,Dinamarca
+DK_ROD,Rodby Ferry Port,Puerto,54.66,11.35,Dinamarca
+DK_KOG,Koge Port,Puerto,55.46,12.19,Dinamarca
+DK_RUD,Rudkobing Port,Puerto,54.94,10.71,Dinamarca
+DK_SOB,Soby Port (Aero),Puerto,54.89,10.26,Dinamarca
+DK_FYN,Fynshav Port (Als),Puerto,55.0,9.99,Dinamarca
+DK_RON,Ronne Port (Bornholm),Puerto,55.1,14.7,Dinamarca
+SE_HAL,Halmstad Port,Puerto,56.66,12.86,Suecia
+SE_LAN,Landskrona Port,Puerto,55.87,12.83,Suecia
+SE_TRE,Trelleborg Port,Puerto,55.38,13.15,Suecia
+SE_YST,Ystad Port,Puerto,55.43,13.82,Suecia
+SE_LYS,Lysekil Port,Puerto,58.27,11.43,Suecia
+SE_UDD,Uddevalla Port,Puerto,58.35,11.94,Suecia
+DE_TRV,Travemunde Port,Puerto,53.96,10.87,Alemania
+DE_PUT,Puttgarden Ferry Port,Puerto,54.5,11.23,Alemania
+DE_CUX,Cuxhaven Port,Puerto,53.87,8.71,Alemania
+DE_BRV,Bremerhaven Port,Puerto,53.57,8.13,Alemania
+NO_MAN,Mandal Port,Puerto,57.98,7.45,Noruega
+NO_LAR,Larvik Port,Puerto,59.05,10.03,Noruega
+PL_SWI,Swinoujscie Port,Puerto,53.91,14.25,Polonia
 WP_SKAGERRAK,Skagerrak TSS Corridor,Waypoint,57.8,9.5,Internacional
 WP_KATTEGAT_N,Kattegat North Lane,Waypoint,57.3,11.3,Internacional
 WP_KATTEGAT_S,Kattegat South Lane,Waypoint,56.35,11.8,Internacional
@@ -23,3 +65,22 @@ WP_FEHMARNBELT,Fehmarn Belt Passage,Waypoint,54.55,11.3,Alemania-Dinamarca
 WP_NORTHSEA_N,North Sea North Approach,Waypoint,56.8,7.5,Internacional
 WP_NORTHSEA_S,North Sea South Route,Waypoint,55.0,7.5,Internacional
 WP_BALTIC_W,Baltic Sea West Gateway,Waypoint,54.8,13.5,Internacional
+WP_LAESO,Laeso Channel,Waypoint,57.3,10.75,Internacional
+WP_ANHOLT,Anholt Passage,Waypoint,56.72,11.58,Internacional
+WP_SAMSO,Samso Belt,Waypoint,55.87,10.78,Dinamarca
+WP_LILLEBAELT,Little Belt South,Waypoint,55.35,9.72,Dinamarca
+WP_KIEL_W,Kiel Canal West Approach,Waypoint,53.95,8.8,Alemania
+WP_BORNHOLM_W,Bornholm West,Waypoint,55.1,13.9,Internacional
+WP_BALTIC_E,Baltic Sea East Gateway,Waypoint,54.3,14.0,Internacional
+WP_SKAW_E,Skaw East,Waypoint,57.75,11.0,Internacional
+WP_FALSTERBO,Falsterbo Round,Waypoint,55.28,13.0,Internacional
+WP_DROGDEN,Drogden Channel,Waypoint,55.6,12.78,Dinamarca
+WP_OSLOFJORD,Oslofjord Mouth,Waypoint,59.03,10.58,Noruega
+WP_HALS,Hals Approach (Limfjord),Waypoint,57.0,10.45,Dinamarca
+WP_LANGELAND_S,Langeland South,Waypoint,54.7,10.85,Dinamarca
+WP_HORSENS_M,Horsens Fjord Mouth,Waypoint,55.82,10.1,Dinamarca
+WP_VEJLE_M,Vejle Fjord Mouth,Waypoint,55.63,9.8,Dinamarca
+WP_ODENSE_M,Odense Fjord Mouth,Waypoint,55.6,10.47,Dinamarca
+WP_ENDELAVE_N,Endelave North Passage,Waypoint,55.81,10.42,Dinamarca
+WP_UDDEVALLA_M,Uddevalla Fjord Mouth,Waypoint,58.28,11.55,Suecia
+WP_EBELTOFT_S,Ebeltoft South Approach,Waypoint,56.03,10.62,Dinamarca

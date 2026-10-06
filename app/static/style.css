@@ -1,0 +1,303 @@
+/* ==========================================================================
+   Planificador Marítimo Inteligente — Estilos Avanzados & Sistema Visual
+   ========================================================================== */
+
+/* Variables de color y temas */
+:root {
+  --bg-primary: #0b132b;
+  --bg-secondary: #1c2541;
+  --bg-card: rgba(30, 41, 59, 0.7);
+  --bg-card-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-cyan: #0ea5e9;
+  --accent-blue: #3b82f6;
+  --accent-emerald: #10b981;
+  --accent-coral: #f43f5e;
+  --accent-amber: #f59e0b;
+  --accent-purple: #8b5cf6;
+}
+
+.light-theme {
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-border: rgba(226, 232, 240, 0.9);
+  --text-primary: #0f172a;
+  --text-muted: #64748b;
+  --accent-cyan: #0284c7;
+  --accent-blue: #2563eb;
+  --accent-emerald: #059669;
+  --accent-coral: #e11d48;
+  --accent-amber: #d97706;
+  --accent-purple: #7c3aed;
+}
+
+/* Tipografía base */
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.font-mono-numbers {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Glassmorphism Cards */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--bg-card-border);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+.light-theme .glass-panel {
+  box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.07), 0 2px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Animaciones y Pulsos */
+@keyframes radar-pulse {
+  0% {
+    r: 9px;
+    opacity: 0.9;
+  }
+  50% {
+    r: 18px;
+    opacity: 0.2;
+  }
+  100% {
+    r: 9px;
+    opacity: 0.9;
+  }
+}
+
+.radar-marker {
+  animation: radar-pulse 2s infinite ease-in-out;
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+.route-animated {
+  stroke-dasharray: 10, 8;
+  animation: dash-flow 1.5s linear infinite;
+}
+
+/* Scrollbars personalizados */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 9999px;
+}
+
+.light-theme ::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.7);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(14, 165, 233, 0.8);
+}
+
+/* Popups personalizados de Leaflet */
+.leaflet-popup-content-wrapper {
+  background: rgba(15, 23, 42, 0.95) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(8px) !important;
+  font-family: 'Inter', sans-serif !important;
+  padding: 4px !important;
+}
+
+.light-theme .leaflet-popup-content-wrapper {
+  background: rgba(255, 255, 255, 0.98) !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(203, 213, 225, 0.8) !important;
+  box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.15) !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(15, 23, 42, 0.95) !important;
+}
+
+.light-theme .leaflet-popup-tip {
+  background: rgba(255, 255, 255, 0.98) !important;
+}
+
+.leaflet-container {
+  font-family: inherit !important;
+  background-color: #0b132b !important;
+}
+
+.light-theme .leaflet-container {
+  background-color: #e2e8f0 !important;
+}
+
+/* Tooltip de Leaflet */
+.leaflet-tooltip {
+  background: rgba(15, 23, 42, 0.85) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.4) !important;
+  border-radius: 6px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+}
+
+.light-theme .leaflet-tooltip {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #0369a1 !important;
+  border: 1px solid rgba(186, 230, 253, 0.9) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Selector interactivo de Algoritmo */
+.algo-card {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--bg-card-border);
+}
+
+.algo-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.5);
+  background: rgba(14, 165, 233, 0.08);
+}
+
+.algo-card.selected {
+  border-color: #0ea5e9;
+  background: rgba(14, 165, 233, 0.15);
+  box-shadow: 0 0 16px -2px rgba(14, 165, 233, 0.4);
+}
+
+.algo-card input[type="radio"] {
+  display: none;
+}
+
+/* Selector interactivo de Criterio */
+.crit-btn {
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.crit-btn.selected {
+  background: #0ea5e9;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35);
+}
+
+/* SVG del Grafo de Decisiones */
+.nodo-arbol {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.nodo-arbol:hover circle {
+  filter: drop-shadow(0 0 8px #38bdf8);
+}
+
+.nodo-actual {
+  animation: pulso-nodo 1.2s infinite ease-in-out;
+}
+
+@keyframes pulso-nodo {
+  0%, 100% {
+    stroke-width: 2.5;
+    filter: drop-shadow(0 0 3px rgba(14, 165, 233, 0.6));
+  }
+  50% {
+    stroke-width: 5;
+    filter: drop-shadow(0 0 12px rgba(56, 189, 248, 1));
+  }
+}
+
+/* Bitácora de pasos (Terminal style) */
+#logPasos {
+  scrollbar-width: thin;
+}
+
+#logPasos li {
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+#logPasos li.actual {
+  background: rgba(14, 165, 233, 0.15) !important;
+  border-left-color: #0ea5e9 !important;
+  color: #38bdf8 !important;
+  font-weight: 600;
+}
+
+#logPasos li.futuro {
+  opacity: 0.35;
+}
+
+#logPasos li.camino {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-left-color: #10b981 !important;
+  color: #34d399 !important;
+  font-weight: 600;
+}
+
+/* Tabla Comparativa */
+.tabla-comparativa tr {
+  transition: background-color 0.15s ease;
+}
+
+.tabla-comparativa tr:hover td {
+  background-color: rgba(56, 189, 248, 0.08);
+}
+
+.tabla-comparativa tr.mejor td {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+.tabla-comparativa tr.mejor td:first-child {
+  border-left: 4px solid #10b981;
+}
+
+/* Slider estilizado */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(100, 116, 139, 0.3);
+  border-radius: 9999px;
+  height: 6px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0ea5e9;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.7);
+  transition: transform 0.1s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}

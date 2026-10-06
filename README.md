@@ -28,11 +28,18 @@ Proyecto-IA/
 ├── requirements.txt      # Dependencias del proyecto (pandas, numpy, networkx, matplotlib)
 ├── dataset.py            # SCRIPT ÚNICO: procesa datos y exporta el grafo
 ├── grafo.py              # Carga nodes.csv/edges.csv en un grafo navegable (networkx)
-├── agente.py             # Agente inteligente: percibir, consultar y ejecutar acciones
+├── agente.py             # Agente inteligente: percibir, consultar, ejecutar y planificar rutas
+├── busqueda.py           # CORTE 2: BFS, DFS, UCS, Voraz, A* + heurística Haversine + comparar()
 ├── test_agente.py        # Pruebas de funcionamiento del agente sobre la red
+├── test_busqueda.py      # CORTE 2: pruebas de optimalidad, bloqueos y admisibilidad
+├── INFORME_CORTE2.md     # CORTE 2: heurística, tabla comparativa y guion de demo
+├── app/                  # CORTE 2: app web FastAPI (lógica separada en busqueda.py/agente.py)
+│   ├── main.py           # API: /api/nodos, /api/red, /api/ruta, /api/comparar
+│   ├── templates/index.html  # UI: mapa, selectores, grafo de decisiones, tabla
+│   └── static/app.js     # Cliente Leaflet (sin lógica de búsqueda)
 ├── data/                 # CARPETA DE SALIDA DEL GRAFO
-│   ├── nodes.csv         # 24 puertos y waypoints con coordenadas
-│   ├── edges.csv         # 26 conexiones con los 7 atributos obligatorios
+│   ├── nodes.csv         # 85 puertos y waypoints con coordenadas
+│   ├── edges.csv         # 176 conexiones con los 7 atributos obligatorios
 │   └── grafo_red.png     # Imagen georreferenciada de la red (Puertos vs Waypoints)
 └── aisdk-2025-02-27.csv  # Dataset crudo descargado (~3.1 GB, 17.1M registros AIS)
 ```
@@ -48,22 +55,17 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Ejecutar el Procesamiento y Generación de la Red
+### 2. Ejecutar la Batería de Pruebas Automatizadas
 ```bash
-python dataset.py
+python3 test_agente.py     # Pruebas del agente: percepción, navegación y planificación (6/6)
+python3 test_busqueda.py   # Pruebas de búsqueda: BFS, DFS, UCS, Voraz, A*, admisibilidad (7/7)
 ```
-Este script realiza automáticamente:
-- Ingesta por bloques con tipado estricto.
-- Agregación espacial vectorizada $O(N) + O(E)$.
-- Exportación de `nodes.csv` y `edges.csv` (con los 7 atributos obligatorios).
-- Generación de la imagen visual `grafo_red.png`.
 
-### 3. Ejecutar el Agente Inteligente y sus Pruebas
+### 3. Iniciar la Aplicación Web Interactiva
 ```bash
-python3 grafo.py         # Verifica la carga del grafo (24 nodos, 26 aristas)
-python3 agente.py        # Verifica la percepción inicial del agente
-python3 test_agente.py   # Corre la batería completa de pruebas de navegación
+uvicorn app.main:app --port 8000
 ```
+Abrir en el navegador: [http://localhost:8000](http://localhost:8000) (documentación interactiva de la API en `http://localhost:8000/docs`).
 
 ---
 
@@ -225,3 +227,27 @@ $$h(n) \le h^*(n)$$
 Adicionalmente, por la **desigualdad triangular sobre la esfera**, la heurística es **consistente (monótona)**:
 $$h(n) \le c(n, a, n') + h(n')$$
 Esto le garantiza a la siguiente etapa que **A\* nunca reabrirá nodos cerrados**, ejecutándose con máxima eficiencia.
+
+---
+
+# Fase 2 — Corte 2: Búsqueda y App Web
+
+La red creció de 24 a **85 nodos (55 puertos + 30 waypoints) y 176 aristas**, con
+**cero cruces de tierra** (ver `INFORME_CORTE2.md` y `.venv/bin/python validar_tierra.py`).
+
+### Nuevos archivos
+
+- `busqueda.py` — BFS, DFS, UCS, Voraz, A\* (criterios distancia/tiempo/costo), heurística
+  Haversine, `comparar()` y verificación de admisibilidad.
+- `test_busqueda.py` — 7 pruebas (optimalidad, bloqueos, admisibilidad).
+- `validar_tierra.py` + `data/landmask.npz` — auditoría de navegabilidad.
+- `app/` — web FastAPI: mapa Leaflet, selectores de origen/destino/algoritmo/criterio,
+  grafo de decisiones paso a paso y tabla comparativa.
+
+### Ejecución
+
+```bash
+.venv/bin/python test_busqueda.py   # motor de búsqueda
+.venv/bin/python validar_tierra.py  # 0 cruces (exit 0)
+.venv/bin/uvicorn app.main:app --port 8000  # web en http://localhost:8000
+```

@@ -22,9 +22,9 @@ def prueba_2_movimiento_simple(G):
     """El agente debe poder ejecutar un único movimiento válido."""
     print("\n--- Prueba 2: Movimiento simple (un salto) ---")
     agente = AgenteMaritimo(grafo=G, nodo_actual="DK_CPH")
-    resultado = agente.ejecutar_accion("WP_ORESUND_N")
-    assert agente.nodo_actual == "WP_ORESUND_N"
-    assert agente.historial == ["DK_CPH", "WP_ORESUND_N"]
+    resultado = agente.ejecutar_accion("SE_MAL")
+    assert agente.nodo_actual == "SE_MAL"
+    assert agente.historial == ["DK_CPH", "SE_MAL"]
     print(f"OK: se movió de {resultado['origen']} a {resultado['destino']}")
     print(f"    distancia={resultado['distancia_arista']} nm, "
           f"tiempo={resultado['tiempo_arista']} h, "
@@ -36,11 +36,12 @@ def prueba_3_ruta_multiple_saltos(G):
     """
     El agente debe poder recorrer una ruta de varios nodos consecutivos
     entre dos puntos reales de la red: DK_CPH (puerto) -> DE_ROS (puerto),
-    pasando por los waypoints intermedios.
+    por la vía navegable sur (sin cruzar tierra): rodeo de Falsterbo,
+    Kadetrinne y ferry Gedser-Rostock.
     """
     print("\n--- Prueba 3: Ruta de múltiples saltos entre dos puertos ---")
     agente = AgenteMaritimo(grafo=G, nodo_actual="DK_CPH")
-    ruta = ["DK_CPH", "WP_ORESUND_S", "WP_BALTIC_W", "DE_ROS"]
+    ruta = ["DK_CPH", "WP_FALSTERBO", "WP_BALTIC_W", "DK_GED", "DE_ROS"]
 
     for siguiente_nodo in ruta[1:]:
         agente.ejecutar_accion(siguiente_nodo)

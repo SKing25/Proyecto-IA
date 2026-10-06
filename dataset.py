@@ -5,6 +5,7 @@ DOMINIO: LOGÍSTICA PORTUARIA AUTÓNOMA (SMART PORT)
 BACKEND DE DATOS AIS Y MODELADO DEL ENTORNO G = (V, E)
 ================================================================================
 """
+import hashlib
 import math
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -126,6 +127,56 @@ NODOS_RED: Dict[str, Dict[str, Any]] = {
     "DE_KLM": {"nombre": "Kiel Canal Approach", "tipo": "Puerto", "lat": 54.37, "lon": 10.15, "pais": "Alemania"},
     "NO_KRS": {"nombre": "Kristiansand Port", "tipo": "Puerto", "lat": 58.14, "lon": 8.00, "pais": "Noruega"},
     "NO_OSL": {"nombre": "Oslofjord Terminal", "tipo": "Puerto", "lat": 59.10, "lon": 10.60, "pais": "Noruega"},
+    # --- Puertos FASE 2: top destinos reales del AIS (curaduría híbrida) ---
+    # Jutlandia oeste (Mar del Norte)
+    "DK_HVS": {"nombre": "Hvide Sande Port", "tipo": "Puerto", "lat": 56.00, "lon": 8.13, "pais": "Dinamarca"},
+    "DK_THY": {"nombre": "Thyboron Port", "tipo": "Puerto", "lat": 56.70, "lon": 8.21, "pais": "Dinamarca"},
+    "DK_HAN": {"nombre": "Hanstholm Port", "tipo": "Puerto", "lat": 57.11, "lon": 8.60, "pais": "Dinamarca"},
+    "DK_HIR": {"nombre": "Hirtshals Port", "tipo": "Puerto", "lat": 57.59, "lon": 9.96, "pais": "Dinamarca"},
+    "DK_FRH": {"nombre": "Frederikshavn Port", "tipo": "Puerto", "lat": 57.44, "lon": 10.54, "pais": "Dinamarca"},
+    # Jutlandia este / Fionia (Kattegat / Belt)
+    "DK_GRN": {"nombre": "Grenaa Port", "tipo": "Puerto", "lat": 56.41, "lon": 10.93, "pais": "Dinamarca"},
+    "DK_EBE": {"nombre": "Ebeltoft Port", "tipo": "Puerto", "lat": 56.19, "lon": 10.68, "pais": "Dinamarca"},
+    "DK_HOR": {"nombre": "Horsens Port", "tipo": "Puerto", "lat": 55.86, "lon": 9.85, "pais": "Dinamarca"},
+    "DK_VEJ": {"nombre": "Vejle Port", "tipo": "Puerto", "lat": 55.71, "lon": 9.54, "pais": "Dinamarca"},
+    "DK_KOL": {"nombre": "Kolding Port", "tipo": "Puerto", "lat": 55.49, "lon": 9.48, "pais": "Dinamarca"},
+    "DK_ODN": {"nombre": "Odense-Lindo Terminal", "tipo": "Puerto", "lat": 55.48, "lon": 10.42, "pais": "Dinamarca"},
+    "DK_KER": {"nombre": "Kerteminde Port", "tipo": "Puerto", "lat": 55.45, "lon": 10.66, "pais": "Dinamarca"},
+    "DK_FAA": {"nombre": "Faaborg Port", "tipo": "Puerto", "lat": 55.10, "lon": 10.25, "pais": "Dinamarca"},
+    "DK_SVE": {"nombre": "Svendborg Port", "tipo": "Puerto", "lat": 55.06, "lon": 10.61, "pais": "Dinamarca"},
+    # Selandia / Lolland-Falster / islas menores
+    "DK_HUN": {"nombre": "Hundested Port", "tipo": "Puerto", "lat": 55.96, "lon": 11.85, "pais": "Dinamarca"},
+    "DK_GIL": {"nombre": "Gilleleje Port", "tipo": "Puerto", "lat": 56.12, "lon": 12.31, "pais": "Dinamarca"},
+    "DK_KAL": {"nombre": "Kalundborg Port", "tipo": "Puerto", "lat": 55.68, "lon": 11.08, "pais": "Dinamarca"},
+    "DK_KOR": {"nombre": "Korsoer Port", "tipo": "Puerto", "lat": 55.34, "lon": 11.14, "pais": "Dinamarca"},
+    "DK_NYB": {"nombre": "Nyborg Port", "tipo": "Puerto", "lat": 55.31, "lon": 10.80, "pais": "Dinamarca"},
+    "DK_VOR": {"nombre": "Vordingborg Port", "tipo": "Puerto", "lat": 55.01, "lon": 11.91, "pais": "Dinamarca"},
+    "DK_NAK": {"nombre": "Nakskov Port", "tipo": "Puerto", "lat": 54.68, "lon": 11.14, "pais": "Dinamarca"},
+    "DK_BAN": {"nombre": "Bandholm Port", "tipo": "Puerto", "lat": 54.84, "lon": 11.48, "pais": "Dinamarca"},
+    "DK_GED": {"nombre": "Gedser Ferry Port", "tipo": "Puerto", "lat": 54.58, "lon": 11.93, "pais": "Dinamarca"},
+    "DK_ROD": {"nombre": "Rodby Ferry Port", "tipo": "Puerto", "lat": 54.66, "lon": 11.35, "pais": "Dinamarca"},
+    "DK_KOG": {"nombre": "Koge Port", "tipo": "Puerto", "lat": 55.46, "lon": 12.19, "pais": "Dinamarca"},
+    "DK_RUD": {"nombre": "Rudkobing Port", "tipo": "Puerto", "lat": 54.94, "lon": 10.71, "pais": "Dinamarca"},
+    "DK_SOB": {"nombre": "Soby Port (Aero)", "tipo": "Puerto", "lat": 54.89, "lon": 10.26, "pais": "Dinamarca"},
+    "DK_FYN": {"nombre": "Fynshav Port (Als)", "tipo": "Puerto", "lat": 55.00, "lon": 9.99, "pais": "Dinamarca"},
+    "DK_RON": {"nombre": "Ronne Port (Bornholm)", "tipo": "Puerto", "lat": 55.10, "lon": 14.70, "pais": "Dinamarca"},
+    # Suecia (costa Kattegat / Oresund / Báltico)
+    "SE_HAL": {"nombre": "Halmstad Port", "tipo": "Puerto", "lat": 56.66, "lon": 12.86, "pais": "Suecia"},
+    "SE_LAN": {"nombre": "Landskrona Port", "tipo": "Puerto", "lat": 55.87, "lon": 12.83, "pais": "Suecia"},
+    "SE_TRE": {"nombre": "Trelleborg Port", "tipo": "Puerto", "lat": 55.38, "lon": 13.15, "pais": "Suecia"},
+    "SE_YST": {"nombre": "Ystad Port", "tipo": "Puerto", "lat": 55.43, "lon": 13.82, "pais": "Suecia"},
+    "SE_LYS": {"nombre": "Lysekil Port", "tipo": "Puerto", "lat": 58.27, "lon": 11.43, "pais": "Suecia"},
+    "SE_UDD": {"nombre": "Uddevalla Port", "tipo": "Puerto", "lat": 58.35, "lon": 11.94, "pais": "Suecia"},
+    # Alemania (Mar del Norte / Báltico)
+    "DE_TRV": {"nombre": "Travemunde Port", "tipo": "Puerto", "lat": 53.96, "lon": 10.87, "pais": "Alemania"},
+    "DE_PUT": {"nombre": "Puttgarden Ferry Port", "tipo": "Puerto", "lat": 54.50, "lon": 11.23, "pais": "Alemania"},
+    "DE_CUX": {"nombre": "Cuxhaven Port", "tipo": "Puerto", "lat": 53.87, "lon": 8.71, "pais": "Alemania"},
+    "DE_BRV": {"nombre": "Bremerhaven Port", "tipo": "Puerto", "lat": 53.57, "lon": 8.13, "pais": "Alemania"},
+    # Noruega (costa sur)
+    "NO_MAN": {"nombre": "Mandal Port", "tipo": "Puerto", "lat": 57.98, "lon": 7.45, "pais": "Noruega"},
+    "NO_LAR": {"nombre": "Larvik Port", "tipo": "Puerto", "lat": 59.05, "lon": 10.03, "pais": "Noruega"},
+    # Polonia (puerta este del Báltico)
+    "PL_SWI": {"nombre": "Swinoujscie Port", "tipo": "Puerto", "lat": 53.91, "lon": 14.25, "pais": "Polonia"},
 
     # Waypoints de Navegación y Corredores TSS
     "WP_SKAGERRAK":   {"nombre": "Skagerrak TSS Corridor", "tipo": "Waypoint", "lat": 57.80, "lon": 9.50, "pais": "Internacional"},
@@ -138,11 +189,34 @@ NODOS_RED: Dict[str, Dict[str, Any]] = {
     "WP_FEHMARNBELT": {"nombre": "Fehmarn Belt Passage", "tipo": "Waypoint", "lat": 54.55, "lon": 11.30, "pais": "Alemania-Dinamarca"},
     "WP_NORTHSEA_N":  {"nombre": "North Sea North Approach", "tipo": "Waypoint", "lat": 56.80, "lon": 7.50, "pais": "Internacional"},
     "WP_NORTHSEA_S":  {"nombre": "North Sea South Route", "tipo": "Waypoint", "lat": 55.00, "lon": 7.50, "pais": "Internacional"},
-    "WP_BALTIC_W":    {"nombre": "Baltic Sea West Gateway", "tipo": "Waypoint", "lat": 54.80, "lon": 13.50, "pais": "Internacional"}
+    "WP_BALTIC_W":    {"nombre": "Baltic Sea West Gateway", "tipo": "Waypoint", "lat": 54.80, "lon": 13.50, "pais": "Internacional"},
+    # --- Waypoints FASE 2: corredores intermedios para la red ampliada ---
+    "WP_LAESO":      {"nombre": "Laeso Channel", "tipo": "Waypoint", "lat": 57.30, "lon": 10.75, "pais": "Internacional"},
+    "WP_ANHOLT":     {"nombre": "Anholt Passage", "tipo": "Waypoint", "lat": 56.72, "lon": 11.58, "pais": "Internacional"},
+    "WP_SAMSO":      {"nombre": "Samso Belt", "tipo": "Waypoint", "lat": 55.87, "lon": 10.78, "pais": "Dinamarca"},
+    "WP_LILLEBAELT": {"nombre": "Little Belt South", "tipo": "Waypoint", "lat": 55.35, "lon": 9.72, "pais": "Dinamarca"},
+    "WP_KIEL_W":     {"nombre": "Kiel Canal West Approach", "tipo": "Waypoint", "lat": 53.95, "lon": 8.80, "pais": "Alemania"},
+    "WP_BORNHOLM_W": {"nombre": "Bornholm West", "tipo": "Waypoint", "lat": 55.10, "lon": 13.90, "pais": "Internacional"},
+    "WP_BALTIC_E":   {"nombre": "Baltic Sea East Gateway", "tipo": "Waypoint", "lat": 54.30, "lon": 14.00, "pais": "Internacional"},
+    "WP_SKAW_E":     {"nombre": "Skaw East", "tipo": "Waypoint", "lat": 57.75, "lon": 11.00, "pais": "Internacional"},
+    # --- Waypoints FASE 2b: pasos obligados para no cruzar tierra ---
+    "WP_FALSTERBO":  {"nombre": "Falsterbo Round", "tipo": "Waypoint", "lat": 55.28, "lon": 13.00, "pais": "Internacional"},
+    "WP_DROGDEN":    {"nombre": "Drogden Channel", "tipo": "Waypoint", "lat": 55.60, "lon": 12.78, "pais": "Dinamarca"},
+    "WP_OSLOFJORD":  {"nombre": "Oslofjord Mouth", "tipo": "Waypoint", "lat": 59.03, "lon": 10.58, "pais": "Noruega"},
+    # --- Waypoints FASE 2c: bocas de fiordo y pasos entre islas ---
+    "WP_HALS":       {"nombre": "Hals Approach (Limfjord)", "tipo": "Waypoint", "lat": 57.00, "lon": 10.45, "pais": "Dinamarca"},
+    "WP_LANGELAND_S":{"nombre": "Langeland South", "tipo": "Waypoint", "lat": 54.70, "lon": 10.85, "pais": "Dinamarca"},
+    "WP_HORSENS_M":  {"nombre": "Horsens Fjord Mouth", "tipo": "Waypoint", "lat": 55.82, "lon": 10.10, "pais": "Dinamarca"},
+    "WP_VEJLE_M":    {"nombre": "Vejle Fjord Mouth", "tipo": "Waypoint", "lat": 55.63, "lon": 9.80, "pais": "Dinamarca"},
+    "WP_ODENSE_M":   {"nombre": "Odense Fjord Mouth", "tipo": "Waypoint", "lat": 55.60, "lon": 10.47, "pais": "Dinamarca"},
+    "WP_ENDELAVE_N": {"nombre": "Endelave North Passage", "tipo": "Waypoint", "lat": 55.81, "lon": 10.42, "pais": "Dinamarca"},
+    "WP_UDDEVALLA_M":{"nombre": "Uddevalla Fjord Mouth", "tipo": "Waypoint", "lat": 58.28, "lon": 11.55, "pais": "Suecia"},
+    "WP_EBELTOFT_S": {"nombre": "Ebeltoft South Approach", "tipo": "Waypoint", "lat": 56.03, "lon": 10.62, "pais": "Dinamarca"}
 }
 
-CONEXIONES_NAV: List[Tuple[str, str, int, bool]] = [
+ARISTAS_BASE: List[Tuple[str, str, int, bool]] = [
     # (origen, destino, incidentes_historicos, disponibilidad_base)
+    # Troncal manual de la Fase 1: se conserva intacto para no romper rutas probadas.
     ("WP_NORTHSEA_S", "DK_ESB", 1, True),
     ("WP_NORTHSEA_S", "WP_NORTHSEA_N", 0, True),
     ("WP_NORTHSEA_N", "WP_SKAGERRAK", 3, True),
@@ -170,6 +244,136 @@ CONEXIONES_NAV: List[Tuple[str, str, int, bool]] = [
     ("WP_ORESUND_S", "WP_BALTIC_W", 1, True),
     ("DE_ROS", "WP_BALTIC_W", 0, True)
 ]
+
+
+def _dist_nm(a_id: str, b_id: str) -> float:
+    """Distancia Haversine en millas náuticas entre dos nodos del diccionario."""
+    na, nb = NODOS_RED[a_id], NODOS_RED[b_id]
+    _, dist_nm = haversine(na["lat"], na["lon"], nb["lat"], nb["lon"])
+    return dist_nm
+
+
+def _incidentes_default(u: str, v: str) -> int:
+    """Nº de incidentes determinista (0-2) derivado del hash del par, para aristas nuevas."""
+    clave = "".join(sorted([u, v]))
+    return int(hashlib.md5(clave.encode()).hexdigest(), 16) % 3
+
+
+# ------------------------------------------------------------------------------
+# Navegabilidad: ninguna arista debe cruzar tierra (salvo canales dragados).
+# Reutiliza la auditoría de validar_tierra.py como fuente única de verdad.
+# ------------------------------------------------------------------------------
+from validar_tierra import TOL_NM, cargar_mascara, nm_sobre_tierra
+
+
+def _agua_ok(u: str, v: str) -> bool:
+    """True si el segmento u->v es navegable (no cruza tierra)."""
+    na, nb = NODOS_RED[u], NODOS_RED[v]
+    grid, lon0, lat0, step = cargar_mascara()
+    return nm_sobre_tierra(grid, lon0, lat0, step,
+                           na["lat"], na["lon"], nb["lat"], nb["lon"]) <= TOL_NM
+
+
+# Canales de acceso dragados (puertos de fiordo): la máscara 10m no resuelve
+# canales mantenidos de <1 nm de ancho; son rutas reales, se eximen del test.
+# (puerto, waypoint de boca, incidentes)
+ACCESOS_FIORDO: List[Tuple[str, str, int]] = [
+    ("DK_AAL", "WP_HALS", 1),        # Limfjord: Aalborg -> Hals
+    ("DK_HOR", "WP_HORSENS_M", 0),    # Horsens Fjord
+    ("DK_VEJ", "WP_VEJLE_M", 1),      # Vejle Fjord
+    ("DK_ODN", "WP_ODENSE_M", 0),     # Odense Fjord
+    ("SE_UDD", "WP_UDDEVALLA_M", 0),  # Uddevalla Fjord (Havstensfjord)
+]
+
+
+def generar_conexiones(k: int = 3, max_dist_nm: float = 90.0,
+                       max_candidata_nm: float = 110.0) -> List[Tuple[str, str, int, bool]]:
+    """
+    Red navegable: troncal manual (reparando cruces por tierra con rutas
+    solo-agua) + k-vecinos solo-agua + puentes de conectividad solo-agua.
+
+    - Cada nodo se conecta a sus k vecinos más cercanos navegables.
+    - Se garantiza que el grafo resultante sea conexo.
+    - Retorna lista de (origen, destino, incidentes, disponibilidad).
+    """
+    vistos: set = set()
+    aristas: List[Tuple[str, str, int, bool]] = []
+
+    def agregar(u: str, v: str, inc: int, disp: bool) -> None:
+        clave = tuple(sorted([u, v]))
+        if u != v and clave not in vistos:
+            vistos.add(clave)
+            aristas.append((u, v, inc, disp))
+
+    ids = list(NODOS_RED.keys())
+
+    # 1. Grafo candidato: todos los pares cercanos cuyo segmento no cruza tierra
+    print("[2a/4] Verificando navegabilidad de pares cercanos (máscara de tierra)...")
+    cand = nx.Graph()
+    cand.add_nodes_from(ids)
+    for i in range(len(ids)):
+        for j in range(i + 1, len(ids)):
+            u, v = ids[i], ids[j]
+            d = _dist_nm(u, v)
+            if d <= max_candidata_nm and _agua_ok(u, v):
+                cand.add_edge(u, v, peso=d)
+
+    # 2. Troncal: conservar la navegable; reenrutar la que cruce tierra
+    for u, v, inc, disp in ARISTAS_BASE:
+        if _agua_ok(u, v):
+            agregar(u, v, inc, disp)
+            continue
+        try:
+            ruta = nx.shortest_path(cand, u, v, weight="peso")
+            for a, b in zip(ruta, ruta[1:]):
+                agregar(a, b, _incidentes_default(a, b), True)
+            print(f"      -> troncal reenrutada {u}->{v}: {' -> '.join(ruta)}")
+        except nx.NetworkXNoPath:
+            # Sin alternativa navegable: se elimina (la conectividad global
+            # la garantiza el paso 4 con puentes solo-agua).
+            print(f"      !! {u}->{v} cruza tierra y no tiene ruta alterna: se elimina")
+
+    # 2b. Accesos a puertos de fiordo (canales dragados, exentos del test)
+    for u, v, inc in ACCESOS_FIORDO:
+        agregar(u, v, inc, True)
+
+    # 3. k-vecinos solo-agua
+    for u in ids:
+        cercanas = sorted(((d["peso"], vv) for vv, d in cand[u].items()), key=lambda t: t[0])
+        for dist, vv in cercanas[:k]:
+            if dist <= max_dist_nm:
+                agregar(u, vv, _incidentes_default(u, vv), True)
+
+    # Garantizar conectividad: unir componentes con el par navegable más cercano
+    G = nx.Graph()
+    G.add_nodes_from(ids)
+    for u, v, _, _ in aristas:
+        G.add_edge(u, v)
+    while not nx.is_connected(G):
+        comps = list(nx.connected_components(G))
+        mejor = None
+        for i in range(len(comps)):
+            for j in range(i + 1, len(comps)):
+                for u in comps[i]:
+                    for v in comps[j]:
+                        if not _agua_ok(u, v):
+                            continue
+                        d = _dist_nm(u, v)
+                        if mejor is None or d < mejor[0]:
+                            mejor = (d, u, v)
+        if mejor is None:
+            print("      !! componentes aisladas:")
+            for c in comps:
+                print(f"         ({len(c)}): {sorted(c)[:12]}")
+            raise RuntimeError("Sin puente navegable entre componentes; revisar waypoints.")
+        _, u, v = mejor
+        agregar(u, v, _incidentes_default(u, v), True)
+        G.add_edge(u, v)
+
+    return aristas
+
+
+CONEXIONES_NAV: List[Tuple[str, str, int, bool]] = generar_conexiones()
 
 
 # ------------------------------------------------------------------------------

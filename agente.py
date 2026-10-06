@@ -9,6 +9,15 @@ import networkx as nx
 
 from grafo import construir_grafo
 
+try:
+    from busqueda import ALGORITMOS, ResultadoBusqueda, buscar
+except ImportError:  # compatibilidad si busqueda.py aún no existe
+    ALGORITMOS = []
+    ResultadoBusqueda = None
+
+    def buscar(*args, **kwargs):
+        raise RuntimeError("Módulo busqueda.py no disponible.")
+
 
 class AccionInvalidaError(Exception):
     """Se lanza cuando el agente intenta moverse a un nodo no adyacente
@@ -135,6 +144,33 @@ class AgenteMaritimo:
             f"Tiempo total: {self.tiempo_total:.2f} h | "
             f"Costo total: ${self.costo_total:.2f}"
         )
+
+    # ------------------------------------------------------------------
+    # PLANIFICACIÓN (Corte 2): deliberar con un algoritmo de búsqueda
+    # ------------------------------------------------------------------
+    def planificar_ruta(self, destino: str, algoritmo: str = "astar",
+                        criterio: str = "distancia"):
+        """
+        Fase deliberativa: calcula un plan (camino) desde el nodo actual
+        hasta `destino` usando el algoritmo y criterio indicados.
+        No mueve al agente; solo retorna el ResultadoBusqueda.
+        """
+        return buscar(algoritmo, self.nodo_actual, destino, self.grafo, criterio)
+
+    def ejecutar_plan(self, destino: str, algoritmo: str = "astar",
+                      criterio: str = "distancia") -> dict:
+        """
+        Planifica y luego ejecuta el plan paso a paso con ejecutar_accion(),
+        actualizando historial y métricas. Retorna plan + traza de ejecución.
+        """
+        plan = self.planificar_ruta(destino, algoritmo, criterio)
+        if not plan.exito:
+            return {"plan": plan, "ejecutado": False, "motivo": plan.error}
+        traza = []
+        for siguiente in plan.camino[1:]:
+            traza.append(self.ejecutar_accion(siguiente))
+        return {"plan": plan, "ejecutado": True, "pasos": traza,
+                "resumen_final": self.resumen()}
 
 
 if __name__ == "__main__":
